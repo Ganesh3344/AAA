@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using Books.Models;
 using Books.ViewModels;
@@ -17,7 +18,8 @@ namespace Books.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            return View();
+            var books = _context.Books.Include(m=>m.Category).ToList();
+            return View(books);
         }
 
         public ActionResult Create()

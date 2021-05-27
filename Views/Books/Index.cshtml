@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Books.Models.Book>
 @{
     ViewBag.Title = "Index";
 }
@@ -7,8 +7,51 @@
 
 <hr />
 
-<a href="@Url.Action("Create")" class="btn btn-primary">
-    <i class="icofont-plus"></i> 
+<a href="@Url.Action("Create")" class="btn btn-primary my-3">
+    <i class="icofont-plus"></i>
     Add New
 </a>
 
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        There are no books yet
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Author</td>
+                <td>Category</td>
+                <td>Description</td>
+                <td>Added On</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Category.Name</td>
+                    <td>@book.Description</td>
+                    <td>@book.AddedOn</td>
+                    <td>
+                        <a href="@Url.Action("Edit","Books",new {id = book.Id})" class="btn btn-secondary">
+                            <i class="icofont-ui-edit"></i>
+                            Edit
+                        </a>
+                        <a href="javascript:;" class="btn btn-danger">
+                            <i class="icofont-ui-close"></i>
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
