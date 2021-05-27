@@ -29,9 +29,27 @@ namespace Books.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Save()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(BookFormViewModel model)
         {
-            throw new System.NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                model.Categories = _context.Categories.Where(m => m.IsActive).ToList();
+                return View("Create",model);
+            }
+
+            var book = new Book
+            {
+                Title = model.Title,
+                CategoryId = model.CategoryId,
+                Author = model.Author,
+                Description = model.Description
+            };
+
+            _context.Books.Add(book);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
